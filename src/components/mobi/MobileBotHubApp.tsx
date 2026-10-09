@@ -1,0 +1,230 @@
+import React, { useState } from 'react';
+import {
+  Users,
+  PlusCircle,
+  Bot,
+  Wallet,
+  Wrench,
+  Smartphone,
+  Maximize2,
+  Minimize2,
+  Wifi,
+  Battery,
+  Sparkles,
+  Layers,
+  ArrowLeft
+} from 'lucide-react';
+import { ClientBot } from '../../types';
+import { INITIAL_CLIENTS } from '../../data/clientsData';
+import { ClientsAdminView } from './ClientsAdminView';
+import { NewBotWizard } from './NewBotWizard';
+import { AgencyCopilotView } from './AgencyCopilotView';
+import { AgencyFinanceView } from './AgencyFinanceView';
+import { ClientDetailModal } from './ClientDetailModal';
+import { PWAInstallButton } from '../pwa/PWAInstallButton';
+
+interface MobileBotHubAppProps {
+  onOpenTireShopSolution: () => void;
+}
+
+export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShopSolution }) => {
+  const [clients, setClients] = useState<ClientBot[]>(INITIAL_CLIENTS);
+  const [activeNavTab, setActiveNavTab] = useState<'clients' | 'new-bot' | 'agency-copilot' | 'finance'>('clients');
+  const [selectedClientForDetail, setSelectedClientForDetail] = useState<ClientBot | null>(null);
+  const [isPhoneFrameMode, setIsPhoneFrameMode] = useState<boolean>(true);
+
+  const handleBotCreated = (newBot: ClientBot) => {
+    setClients([newBot, ...clients]);
+    setSelectedClientForDetail(newBot);
+    setActiveNavTab('clients');
+  };
+
+  const handleUpdateClient = (updated: ClientBot) => {
+    setClients(clients.map((c) => (c.id === updated.id ? updated : c)));
+    setSelectedClientForDetail(updated);
+  };
+
+  const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  return (
+    <div className="min-h-[85vh] bg-slate-950 text-slate-100 flex flex-col items-center justify-start p-2 sm:p-4">
+      {/* Top Controller Bar (Switch frame / Fullscreen) */}
+      <div className="w-full max-w-4xl mx-auto mb-3 flex items-center justify-between px-2 text-xs">
+        <div className="flex items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span className="font-bold text-white tracking-wide">
+            BotHub Pro — Мобильный пульт управления ботами
+          </span>
+          <span className="hidden sm:inline text-slate-500">|</span>
+          <span className="hidden sm:inline text-slate-400">
+            {clients.length} подключенных организаций
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsPhoneFrameMode(!isPhoneFrameMode)}
+            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer text-xs"
+          >
+            {isPhoneFrameMode ? (
+              <>
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Во весь экран</span>
+              </>
+            ) : (
+              <>
+                <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="hidden sm:inline">Вид смартфона</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Main Container: Either Phone Frame or Full Width */}
+      <div
+        className={`w-full transition-all duration-300 ${
+          isPhoneFrameMode
+            ? 'max-w-[420px] rounded-[42px] border-[6px] border-slate-800/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] overflow-hidden bg-slate-950 flex flex-col h-[780px]'
+            : 'max-w-4xl rounded-3xl border border-slate-800 bg-slate-950 flex flex-col min-h-[700px] shadow-2xl'
+        }`}
+      >
+        {/* Smartphone Native Status Bar */}
+        <div className="bg-slate-950 px-5 pt-3 pb-2 flex items-center justify-between text-xs text-slate-400 select-none border-b border-slate-900">
+          <span className="font-semibold text-white tracking-tight">{currentTime}</span>
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <Wifi className="w-3.5 h-3.5" />
+            <span className="text-[10px] font-mono">5G</span>
+            <Battery className="w-4 h-4 text-emerald-400" />
+          </div>
+        </div>
+
+        {/* Mobile App Header */}
+        <div className="bg-slate-900/90 border-b border-slate-800/80 px-4 py-2.5 flex items-center justify-between backdrop-blur-md">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-xs">
+              <Bot className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="font-bold text-xs text-white flex items-center gap-1">
+                <span>BotHub</span>
+                <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono font-semibold">
+                  PRO
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-400">
+                {activeNavTab === 'clients' && 'Администрирование клиентов'}
+                {activeNavTab === 'new-bot' && 'Конструктор нового бота'}
+                {activeNavTab === 'agency-copilot' && 'Ассистент Нашего Агентства'}
+                {activeNavTab === 'finance' && 'MRR и Абонплаты'}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <PWAInstallButton />
+            <button
+              onClick={onOpenTireShopSolution}
+              title="Шиномонтаж 89437653289"
+              className="p-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded-xl transition-colors cursor-pointer flex items-center gap-1 text-[11px]"
+            >
+              <Wrench className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline font-mono">89437653289</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Main Mobile Body */}
+        <div className="flex-1 overflow-y-auto bg-slate-950 pb-16">
+          {activeNavTab === 'clients' && (
+            <ClientsAdminView
+              clients={clients}
+              onSelectClient={(c) => setSelectedClientForDetail(c)}
+              onOpenNewBotWizard={() => setActiveNavTab('new-bot')}
+              onOpenTireShopSolution={onOpenTireShopSolution}
+            />
+          )}
+
+          {activeNavTab === 'new-bot' && (
+            <NewBotWizard
+              onBotCreated={handleBotCreated}
+              onCancel={() => setActiveNavTab('clients')}
+            />
+          )}
+
+          {activeNavTab === 'agency-copilot' && (
+            <AgencyCopilotView
+              clients={clients}
+              onOpenNewBotWizard={() => setActiveNavTab('new-bot')}
+            />
+          )}
+
+          {activeNavTab === 'finance' && (
+            <AgencyFinanceView clients={clients} />
+          )}
+        </div>
+
+        {/* Fixed Mobile Bottom Navigation Bar (Тактильный нативный навбар) */}
+        <div className="bg-slate-900/95 border-t border-slate-800 p-1.5 flex items-center justify-around text-[10px] backdrop-blur-md shrink-0 shadow-lg">
+          <button
+            onClick={() => setActiveNavTab('clients')}
+            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
+              activeNavTab === 'clients'
+                ? 'text-emerald-400 font-bold bg-emerald-500/10'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Users className="w-4 h-4 mb-0.5" />
+            <span>Клиенты ({clients.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveNavTab('new-bot')}
+            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
+              activeNavTab === 'new-bot'
+                ? 'text-emerald-400 font-bold bg-emerald-500/10'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <PlusCircle className="w-4 h-4 mb-0.5" />
+            <span>Новый бот</span>
+          </button>
+
+          <button
+            onClick={() => setActiveNavTab('agency-copilot')}
+            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer relative ${
+              activeNavTab === 'agency-copilot'
+                ? 'text-purple-300 font-bold bg-purple-500/10'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <span className="absolute -top-1 right-2 w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+            <Bot className="w-4 h-4 mb-0.5 text-purple-400" />
+            <span>Наш бот</span>
+          </button>
+
+          <button
+            onClick={() => setActiveNavTab('finance')}
+            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
+              activeNavTab === 'finance'
+                ? 'text-emerald-400 font-bold bg-emerald-500/10'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Wallet className="w-4 h-4 mb-0.5" />
+            <span>Финансы</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Client Detail & Interactive Tester Modal */}
+      {selectedClientForDetail && (
+        <ClientDetailModal
+          client={selectedClientForDetail}
+          onClose={() => setSelectedClientForDetail(null)}
+          onUpdateClient={handleUpdateClient}
+        />
+      )}
+    </div>
+  );
+};

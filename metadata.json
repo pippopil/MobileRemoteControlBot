@@ -1,0 +1,8 @@
+{
+  "name": "FastSaaS Launchpad - Анализ и запуск прибыльных микро-приложений",
+  "description": "Стратегический анализатор и пошаговый запуск микро-бизнесов и AI-сервисов с минимальными вложениями и окупаемостью от 7 дней.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
