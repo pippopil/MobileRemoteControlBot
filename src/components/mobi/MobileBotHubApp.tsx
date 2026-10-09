@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Users,
   PlusCircle,
   Bot,
   Wallet,
-  Wrench,
   Smartphone,
   Maximize2,
   Minimize2,
   Wifi,
   Battery,
   Sparkles,
-  Layers,
-  ArrowLeft
+  BookOpen,
+  RotateCcw,
+  MessageSquare
 } from 'lucide-react';
 import { ClientBot } from '../../types';
 import { INITIAL_CLIENTS } from '../../data/clientsData';
@@ -21,34 +21,98 @@ import { NewBotWizard } from './NewBotWizard';
 import { AgencyCopilotView } from './AgencyCopilotView';
 import { AgencyFinanceView } from './AgencyFinanceView';
 import { ClientDetailModal } from './ClientDetailModal';
+import { ClientOnboardingGuide } from './ClientOnboardingGuide';
 import { PWAInstallButton } from '../pwa/PWAInstallButton';
 
-interface MobileBotHubAppProps {
-  onOpenTireShopSolution: () => void;
-}
+const STORAGE_KEY = 'bothub_pro_clients_v2';
 
-export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShopSolution }) => {
-  const [clients, setClients] = useState<ClientBot[]>(INITIAL_CLIENTS);
-  const [activeNavTab, setActiveNavTab] = useState<'clients' | 'new-bot' | 'agency-copilot' | 'finance'>('clients');
+export const MobileBotHubApp: React.FC = () => {
+  const [clients, setClients] = useState<ClientBot[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Could not read clients from localStorage:', e);
+    }
+    return INITIAL_CLIENTS;
+  });
+
+  const [activeNavTab, setActiveNavTab] = useState<'clients' | 'new-bot' | 'guide' | 'agency-copilot' | 'finance'>('clients');
   const [selectedClientForDetail, setSelectedClientForDetail] = useState<ClientBot | null>(null);
   const [isPhoneFrameMode, setIsPhoneFrameMode] = useState<boolean>(true);
 
+  // Sync to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
+    } catch (e) {
+      console.warn('Could not save clients to localStorage:', e);
+    }
+  }, [clients]);
+
   const handleBotCreated = (newBot: ClientBot) => {
-    setClients([newBot, ...clients]);
+    const updated = [newBot, ...clients];
+    setClients(updated);
     setSelectedClientForDetail(newBot);
     setActiveNavTab('clients');
   };
 
   const handleUpdateClient = (updated: ClientBot) => {
-    setClients(clients.map((c) => (c.id === updated.id ? updated : c)));
+    setClients((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
     setSelectedClientForDetail(updated);
+  };
+
+  const handleToggleStatus = (clientId: string) => {
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        const nextStatus = c.status === 'active' ? 'paused' : 'active';
+        return { ...c, status: nextStatus };
+      })
+    );
+  };
+
+  const handleDeleteClient = (clientId: string) => {
+    setClients((prev) => prev.filter((c) => c.id !== clientId));
+    if (selectedClientForDetail?.id === clientId) {
+      setSelectedClientForDetail(null);
+    }
+  };
+
+  const handleMarkPaid = (clientId: string) => {
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        // Extend billing date by 30 days
+        const currentDate = new Date(c.nextBillingDate);
+        currentDate.setDate(currentDate.getDate() + 30);
+        const newBillingDate = currentDate.toISOString().split('T')[0];
+        return {
+          ...c,
+          status: 'active',
+          nextBillingDate: newBillingDate
+        };
+      })
+    );
+  };
+
+  const handleResetDefaults = () => {
+    if (window.confirm('Сбросить список ботов к стандартным проверенным организациям?')) {
+      setClients(INITIAL_CLIENTS);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_CLIENTS));
+    }
   };
 
   const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   return (
     <div className="min-h-[85vh] bg-slate-950 text-slate-100 flex flex-col items-center justify-start p-2 sm:p-4">
-      {/* Top Controller Bar (Switch frame / Fullscreen) */}
+      {/* Top Controller Bar (Switch frame / Fullscreen / Reset) */}
       <div className="w-full max-w-4xl mx-auto mb-3 flex items-center justify-between px-2 text-xs">
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
@@ -62,6 +126,15 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={handleResetDefaults}
+            title="Восстановить примеры клиентов"
+            className="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-400 hover:text-slate-200 flex items-center gap-1 transition-colors cursor-pointer text-xs"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">Сброс</span>
+          </button>
+
           <button
             onClick={() => setIsPhoneFrameMode(!isPhoneFrameMode)}
             className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer text-xs"
@@ -113,6 +186,7 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
               <div className="text-[10px] text-slate-400">
                 {activeNavTab === 'clients' && 'Администрирование клиентов'}
                 {activeNavTab === 'new-bot' && 'Конструктор нового бота'}
+                {activeNavTab === 'guide' && 'Инструкция по подключению'}
                 {activeNavTab === 'agency-copilot' && 'Ассистент Нашего Агентства'}
                 {activeNavTab === 'finance' && 'MRR и Абонплаты'}
               </div>
@@ -121,14 +195,6 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
 
           <div className="flex items-center gap-1.5">
             <PWAInstallButton />
-            <button
-              onClick={onOpenTireShopSolution}
-              title="Шиномонтаж 89437653289"
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded-xl transition-colors cursor-pointer flex items-center gap-1 text-[11px]"
-            >
-              <Wrench className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline font-mono">89437653289</span>
-            </button>
           </div>
         </div>
 
@@ -139,7 +205,10 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
               clients={clients}
               onSelectClient={(c) => setSelectedClientForDetail(c)}
               onOpenNewBotWizard={() => setActiveNavTab('new-bot')}
-              onOpenTireShopSolution={onOpenTireShopSolution}
+              onOpenGuide={() => setActiveNavTab('guide')}
+              onToggleStatus={handleToggleStatus}
+              onDeleteClient={handleDeleteClient}
+              onMarkPaid={handleMarkPaid}
             />
           )}
 
@@ -147,6 +216,12 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
             <NewBotWizard
               onBotCreated={handleBotCreated}
               onCancel={() => setActiveNavTab('clients')}
+            />
+          )}
+
+          {activeNavTab === 'guide' && (
+            <ClientOnboardingGuide
+              onOpenNewBotWizard={() => setActiveNavTab('new-bot')}
             />
           )}
 
@@ -166,7 +241,7 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
         <div className="bg-slate-900/95 border-t border-slate-800 p-1.5 flex items-center justify-around text-[10px] backdrop-blur-md shrink-0 shadow-lg">
           <button
             onClick={() => setActiveNavTab('clients')}
-            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
+            className={`flex flex-col items-center py-1 px-2.5 rounded-2xl transition-all cursor-pointer ${
               activeNavTab === 'clients'
                 ? 'text-emerald-400 font-bold bg-emerald-500/10'
                 : 'text-slate-400 hover:text-white'
@@ -178,7 +253,7 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
 
           <button
             onClick={() => setActiveNavTab('new-bot')}
-            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
+            className={`flex flex-col items-center py-1 px-2.5 rounded-2xl transition-all cursor-pointer ${
               activeNavTab === 'new-bot'
                 ? 'text-emerald-400 font-bold bg-emerald-500/10'
                 : 'text-slate-400 hover:text-white'
@@ -189,8 +264,20 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
           </button>
 
           <button
+            onClick={() => setActiveNavTab('guide')}
+            className={`flex flex-col items-center py-1 px-2.5 rounded-2xl transition-all cursor-pointer ${
+              activeNavTab === 'guide'
+                ? 'text-cyan-400 font-bold bg-cyan-500/10'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <BookOpen className="w-4 h-4 mb-0.5" />
+            <span>Инструкция</span>
+          </button>
+
+          <button
             onClick={() => setActiveNavTab('agency-copilot')}
-            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer relative ${
+            className={`flex flex-col items-center py-1 px-2.5 rounded-2xl transition-all cursor-pointer relative ${
               activeNavTab === 'agency-copilot'
                 ? 'text-purple-300 font-bold bg-purple-500/10'
                 : 'text-slate-400 hover:text-white'
@@ -203,7 +290,7 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
 
           <button
             onClick={() => setActiveNavTab('finance')}
-            className={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
+            className={`flex flex-col items-center py-1 px-2.5 rounded-2xl transition-all cursor-pointer ${
               activeNavTab === 'finance'
                 ? 'text-emerald-400 font-bold bg-emerald-500/10'
                 : 'text-slate-400 hover:text-white'
