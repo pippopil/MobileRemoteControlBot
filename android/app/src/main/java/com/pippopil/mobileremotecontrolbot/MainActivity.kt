@@ -25,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.webkit.ServiceWorkerClientCompat
 import androidx.webkit.ServiceWorkerControllerCompat
-import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewFeature
 import java.io.InputStream
 
@@ -138,7 +137,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        newWebView.webViewClient = object : WebViewClientCompat() {
+        newWebView.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(
                 view: WebView,
                 request: WebResourceRequest
@@ -190,13 +189,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onReceivedError(
-                view: WebView?,
-                request: WebResourceRequest?,
-                error: WebResourceError?
+                view: WebView,
+                request: WebResourceRequest,
+                error: WebResourceError
             ) {
                 super.onReceivedError(view, request, error)
-                if (request?.isForMainFrame == true) {
-                    Log.e(TAG, "Main frame error: ${error?.description} code: ${error?.errorCode}")
+                if (request.isForMainFrame) {
+                    Log.e(TAG, "Main frame error: ${error.description} code: ${error.errorCode}")
                 }
             }
         }
