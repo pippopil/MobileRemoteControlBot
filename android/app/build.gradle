@@ -3,6 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def buildNumber = 1
+if (System.getenv("BUILD_NUMBER") != null && !System.getenv("BUILD_NUMBER").isEmpty()) {
+    try {
+        buildNumber = System.getenv("BUILD_NUMBER").toInteger()
+    } catch (Exception ignored) {
+        buildNumber = 1
+    }
+}
+def buildVersion = (System.getenv("BUILD_VERSION") != null && !System.getenv("BUILD_VERSION").isEmpty()) ? System.getenv("BUILD_VERSION") : "1.0.1"
+
 android {
     namespace 'com.pippopil.mobileremotecontrolbot'
     compileSdk 34
@@ -11,10 +21,15 @@ android {
         applicationId "com.pippopil.mobileremotecontrolbot"
         minSdk 24
         targetSdk 34
-        versionCode (System.getenv("BUILD_NUMBER") ?: "1").toInteger()
-        versionName (System.getenv("BUILD_VERSION") ?: "1.0.1")
+        versionCode buildNumber
+        versionName buildVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+        }
     }
 
     buildTypes {
