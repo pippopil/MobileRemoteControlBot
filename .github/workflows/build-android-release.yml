@@ -55,7 +55,9 @@ jobs:
       - name: Sync Web Assets to Android App
         run: |
           mkdir -p android/app/src/main/assets/public
-          rm -rf android/app/src/main/assets/public/*
+          rm -rf android/app/src/main/assets/*
+          mkdir -p android/app/src/main/assets/public
+          cp -r dist/* android/app/src/main/assets/
           cp -r dist/* android/app/src/main/assets/public/
 
       - name: Extract Commit Information
