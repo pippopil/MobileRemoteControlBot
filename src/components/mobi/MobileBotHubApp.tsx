@@ -102,9 +102,7 @@ export const MobileBotHubApp: React.FC<MobileBotHubAppProps> = ({ onOpenTireShop
         {/* Mobile App Header */}
         <div className="bg-slate-900/90 border-b border-slate-800/80 px-4 py-2.5 flex items-center justify-between backdrop-blur-md">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-xs">
-              <Bot className="w-4 h-4" />
-            </div>
+            <img src="/icon.svg" alt="BotHub Pro" className="w-7 h-7 rounded-lg shadow-sm border border-cyan-500/30" />
             <div>
               <div className="font-bold text-xs text-white flex items-center gap-1">
                 <span>BotHub</span>

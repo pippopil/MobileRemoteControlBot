@@ -13,13 +13,15 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenA
     <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Zone 1: Single text element wordmark */}
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-            <Rocket className="w-4 h-4" />
+        <div className="flex items-center gap-2.5">
+          <img src="/icon.svg" alt="BotHub Pro" className="w-9 h-9 rounded-xl shadow-lg border border-cyan-500/30" />
+          <div className="flex flex-col">
+            <span className="font-bold text-base sm:text-lg tracking-tight text-white whitespace-nowrap leading-tight flex items-center gap-1.5">
+              BotHub Pro
+              <span className="text-[10px] uppercase font-semibold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">PWA</span>
+            </span>
+            <span className="text-[10px] text-slate-400 font-medium">Mobile Remote Control</span>
           </div>
-          <span className="font-semibold text-base sm:text-lg tracking-tight text-white whitespace-nowrap">
-            FastSaaS Launchpad
-          </span>
         </div>
 
         {/* Zone 2: Clean text navigation links */}

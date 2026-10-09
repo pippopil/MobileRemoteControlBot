@@ -2,118 +2,175 @@
 
 > **Единый мобильный пульт управления ботами-помощниками для организаций, клиентский биллинг и агентский ИИ-копайлот.**
 
+<p align="center">
+  <img src="public/icon.svg" width="128" height="128" alt="BotHub Pro App Icon" />
+</p>
+
 [![Android Build & Release](https://github.com/pippopil/MobileRemoteControlBot/actions/workflows/build-android-release.yml/badge.svg)](https://github.com/pippopil/MobileRemoteControlBot/actions/workflows/build-android-release.yml)
-[![PWA Ready](https://img.shields.io/badge/PWA-Ready%20%26%20Offline-success.svg)](https://github.com/pippopil/MobileRemoteControlBot)
-[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-blue.svg)](https://github.com/pippopil/MobileRemoteControlBot)
+[![Latest Android Release](https://img.shields.io/github/v/release/pippopil/MobileRemoteControlBot?label=Android%20APK&color=success)](https://github.com/pippopil/MobileRemoteControlBot/releases)
+[![PWA Ready](https://img.shields.io/badge/PWA-Installable%20%26%20Offline-06b6d4.svg)](https://github.com/pippopil/MobileRemoteControlBot)
+[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows%20%7C%20macOS-blue.svg)](https://github.com/pippopil/MobileRemoteControlBot)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
 
 ## 🌟 О проекте
 
-**BotHub Pro (MobileRemoteControlBot)** — это современное кроссплатформенное приложение, созданное для агентств и специалистов по автоматизации бизнеса. Оно объединяет:
-1. **Управление всеми ботами клиентов в одном окне**: мониторинг диалогов, лидов, статусов работы и подписок.
-2. **Готовые решения для реального сектора**: например, предустановленный боевой бот для автосервиса и шиномонтажа (*«Шиномонтаж 24/7»*, тел. `89437653289`), барбершопов, клиник и доставки.
-3. **ИИ-ассистент агентства (Copilot)**: внутренний интеллектуальный помощник, который автоматически формирует индивидуальные коммерческие предложения (КП), скрипты продаж для холодных звонков, анализирует клиентскую базу и рассчитывает ROI окупаемости ботов.
-4. **Поддержка каналов**:
-   - **Telegram** (Bot API / Webhook)
-   - **Мессенджер МАКС** (работает в РФ напрямую без необходимости VPN)
+**BotHub Pro (MobileRemoteControlBot)** — это кроссплатформенное приложение и пульт управления для агентств и специалистов по автоматизации бизнеса. Оно объединяет:
+
+1. **Мобильный пульт управления ботами**: мониторинг диалогов, лидов, статусов работы и подписок клиентов в одном окне.
+2. **Готовые решения для реального сектора**: предустановленный боевой бот для автосервиса и шиномонтажа (*«Шиномонтаж 24/7»*, прямой контакт: `89437653289`), барбершопов, клиник и ресторанов.
+3. **ИИ-ассистент агентства (Copilot)**: внутренний интеллектуальный помощник на базе Gemini, который генерирует коммерческие предложения (КП), скрипты холодных звонков, выявляет боли клиентов и рассчитывает окупаемость (ROI).
+4. **Мультиканальность**:
+   - **Telegram** (Bot API / Webhooks)
+   - **Мессенджер МАКС** (работает в РФ напрямую без блокировок и VPN)
    - **WhatsApp Business API**
    - **ВКонтакте (VK Messenger)**
    - **Веб-виджет для сайтов**
-5. **Финансовый модуль (MRR / Billing)**: трекинг ежемесячных подписок, контроль сроков продления, формирование счетов и экспорт отчетов.
+5. **Финансовый модуль (MRR / Billing)**: трекинг абонплат, контроль сроков продления, формирование счетов и финансовая аналитика.
 
 ---
 
-## 🚀 Кроссплатформенность: PWA и Android
+## 🎨 Оригинальная иконка приложения
 
-### 📲 1. Android приложение (APK)
-В репозитории настроен автоматический CI/CD конвейер GitHub Actions (`.github/workflows/build-android-release.yml`).
-- **Сборка на каждый push**: при каждом коммите в ветку `main` запускается сборка нативного Android APK.
-- **Нумерация сборок**: релизы получают автоматический версионированный тег `v1.0.<build_number>`.
-- **Автоматический релиз с описанием**: GitHub Action парсит текст коммита, формирует release notes и прикрепляет готовый APK-файл для скачивания и прямой установки на телефон.
+Приложение оснащено оригинальной высокотехнологичной иконкой, отражающей суть концепции **Mobile Remote Control Hub**:
 
-### 🌐 2. PWA (Progressive Web App) для всех платформ
-Приложение полностью соответствует стандартам PWA:
-- Поддержка установки в один клик на **iOS (iPhone/iPad)**, **macOS**, **Windows** и **Linux**.
-- Оффлайн-работа благодаря Service Worker (кэширование критических экранов и локальной базы).
-- Встроенные компоненты `PWAInstallButton` и `OfflineIndicator` с понятными пошаговыми подсказками для пользователей.
+* **Дизайн**: Кибернетический шлем интеллектуального робота-помощника в глубоких оттенках космического обсидиана (`#050814`) с неоновыми контурами (`#00f2fe` Cyan, `#6366f1` Indigo, `#a855f7` Violet).
+* **Символизм**: 
+  - Излучатель и радиоволны в верхней части символизируют беспроводное удаленное управление и телеметрию;
+  - Сетчатые узлы связывают 4 ключевых канала мессенджеров (Telegram, МАКС, WhatsApp, VK);
+  - Индикатор звуковой волны и светящиеся LED-экраны отражают голосовой и текстовый ИИ-движок;
+  - Нижний сияющий кристалл ядра символизирует вычислительную мощность ИИ-ассистента агентства.
+* **Соблюдение стандартов PWA и Android**:
+  - `public/icon.svg` — масштабируемый векторный оригинал (512×512) для браузеров и дисплеев Retina.
+  - `public/pwa-512x512.png` и `public/pwa-192x192.png` — оптимизированные PNG-изображения для экранов установки.
+  - `public/pwa-maskable-512x512.png` — адаптивная иконка (Maskable Icon) с гарантированной зоной безопасности (Safe Zone Margin 15%), предотвращающей обрезание деталей круглой или квадратной маской на Android.
+  - `public/apple-touch-icon.png` (180×180) — оригинальная иконка для iOS (iPhone / iPad).
+  - `public/favicon.ico` — иконка для вкладок браузера.
+  - `android/app/src/main/res/mipmap-*/` — нативные иконки Android приложения (`ic_launcher.png` и `ic_launcher_round.png` для всех плотностей mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi).
+
+---
+
+## 📲 Подробная инструкция по установке PWA (Progressive Web App)
+
+PWA позволяет запускать **BotHub Pro** как полноценное нативное приложение без необходимости скачивать его через App Store или Google Play. Приложение работает в полноэкранном режиме, сохраняет данные оффлайн и мгновенно запускается с домашнего экрана.
+
+### 🍏 1. Установка на iPhone и iPad (iOS)
+
+> ⚠️ **Важно**: В iOS установка веб-приложений поддерживается через браузер **Safari**.
+
+1. Откройте сайт BotHub Pro в браузере **Safari**.
+2. В нижней панели управления Safari нажмите центральную кнопку **«Поделиться»** (иконка квадрата со стрелкой вверх `[↑]`).
+3. В появившемся меню прокрутите список действий вниз и нажмите пункт **«На экран "Домой"»** (*Add to Home Screen*).
+4. Проверьте имя приложения (**BotHub Pro**) и нажмите **«Добавить»** (*Add*) в правом верхнем углу.
+5. На рабочем столе вашего iPhone/iPad появится фирменная иконка BotHub Pro. При запуске приложение открывается в отдельном окне без адресной строки и панелей Safari.
+
+---
+
+### 🤖 2. Установка на Android (Смартфоны и планшеты)
+
+Поддерживается во всех современных браузерах: **Google Chrome**, **Яндекс.Браузер**, **Samsung Internet**, **Microsoft Edge**, **Opera**.
+
+#### Способ А: В один клик через интерфейс приложения
+1. Откройте сайт в браузере на телефоне.
+2. В верхнем правом углу или в боковом меню нажмите кнопку **«Установить PWA»**.
+3. В появившемся окне подтвердите установку кнопкой **«Установить»**.
+
+#### Способ Б: Через меню браузера Chrome / Яндекс
+1. Нажмите на меню браузера — **три точки (`⋮`)** в правом верхнем углу экрана.
+2. Выберите пункт **«Установить приложение»** (или *«Добавить на главный экран»*).
+3. Нажмите **«Установить»**.
+4. Значок BotHub Pro появится на главном экране и в общем списке приложений Android. Приложение открывается автономно и сохраняет оффлайн-кэш.
+
+---
+
+### 💻 3. Установка на компьютер (Windows, macOS, Linux)
+
+Поддерживается в **Google Chrome**, **Microsoft Edge**, **Brave**, **Яндекс.Браузере**:
+
+1. Откройте сайт BotHub Pro на компьютере.
+2. Обратите внимание на правую часть адресной строки:
+   - В Google Chrome / Edge появится значок монитора со стрелкой или плюсом: **«Установить приложение BotHub Pro»** (`⊕`).
+   - Нажмите на этот значок и подтвердите установку: **«Установить»**.
+3. *Альтернативно через меню*: нажмите **`⋮` (три точки)** в браузере → **«Сохранить и поделиться»** / **«Приложения»** → **«Установить страницу как приложение»**.
+4. После установки:
+   - В **Windows**: приложение открывается в собственном окне, появляется в меню «Пуск» и может быть закреплено на панели задач.
+   - В **macOS**: приложение появляется в папке «Программы» (Applications) и на панели Dock.
+   - В **Linux**: создается `.desktop` ярлык в меню приложений.
+
+---
+
+### ⚡ Преимущества PWA-версии BotHub Pro
+
+| Параметр | Обычный сайт | PWA BotHub Pro | Нативное приложение |
+| :--- | :---: | :---: | :---: |
+| **Установка без магазинов** | ❌ Нет | ✅ Да (в 1 клик) | ❌ Требует Google Play / App Store |
+| **Размер приложения** | — | ⚡ **< 5 МБ** | ⚠️ 30–100 МБ |
+| **Оффлайн-работа** | ❌ Нет | ✅ **Да (Service Worker)** | ✅ Да |
+| **Полноэкранный режим** | ❌ Панели браузера | ✅ **Без рамок браузера** | ✅ Автономное окно |
+| **Автоматические обновления** | При обновлении вкладки | ✅ **Фоновые (autoUpdate)** | ⚠️ Ручное скачивание APK |
+| **Поддерживаемые платформы** | Любые | 📱 iOS, Android, macOS, Win, Linux | Только Android / iOS отдельно |
+
+---
+
+### 📶 Работа в оффлайн-режиме
+
+1. При первом открытии приложения встроенный Service Worker (Workbox) автоматически кэширует интерфейс, стили, шрифты и базовую структуру данных.
+2. Если интернет пропадет или связь нестабильна, в нижней части экрана отобразится индикатор:
+   ```
+   [●] Оффлайн-режим — используются кэшированные данные.
+   ```
+3. Вы сохраняете доступ к просмотру базы ботов, скриптов продаж, финансового калькулятора и карточек клиентов.
+4. При восстановлении соединения данные мгновенно синхронизируются в фоне.
+
+---
+
+## 🤖 Android приложение (APK) и автосборка в GitHub Actions
+
+Для пользователей Android также доступна **нативная APK-версия**:
+* **Репозиторий**: [github.com/pippopil/MobileRemoteControlBot](https://github.com/pippopil/MobileRemoteControlBot)
+* **Релизы с APK**: [Раздел Releases на GitHub](https://github.com/pippopil/MobileRemoteControlBot/releases)
+* **Готовый файл текущей версии**: [**MobileRemoteControlBot-v1.0.5.apk**](https://github.com/pippopil/MobileRemoteControlBot/releases/download/v1.0.5/MobileRemoteControlBot-v1.0.5.apk)
+
+### CI/CD Workflow (`.github/workflows/build-android-release.yml`):
+* Автоматически собирает проект на **Node.js 22 LTS**, компилирует веб-бандл и внедряет его в нативные Android-ассеты.
+* Собирает релизный APK через **Gradle 8.5** и **Android SDK 34**.
+* Создает релиз с тегом `v1.0.<build_number>`, прикрепляет APK-файл и генерирует описание изменений из коммита.
 
 ---
 
 ## 🛠 Стек технологий
 
-- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Lucide Icons, Motion.
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Lucide Icons.
 - **PWA Engine**: `vite-plugin-pwa`, Workbox, Web App Manifest.
-- **Android**: Android SDK 34, Kotlin, AndroidX WebKit, WebViewAssetLoader (безопасное локальное исполнение).
-- **Backend / AI Proxy**: Express.js, Node.js, `@google/genai` (Gemini 2.5 Flash / Flash Lite).
-- **CI/CD**: GitHub Actions, Gradle 8.5, Automated Release Publisher.
+- **Android**: Android SDK 34, Kotlin, AndroidX WebKit, WebViewAssetLoader.
+- **Backend / AI**: Express.js, Node.js, `@google/genai` (Gemini Flash / Flash Lite).
+- **CI/CD**: GitHub Actions, Gradle 8.5.
 
 ---
 
-## 📦 Быстрый старт
+## 📦 Быстрый старт для разработчиков
 
-### 1. Клонирование репозитория
 ```bash
+# 1. Клонирование репозитория
 git clone https://github.com/pippopil/MobileRemoteControlBot.git
 cd MobileRemoteControlBot
-```
 
-### 2. Установка зависимостей
-```bash
+# 2. Установка зависимостей
 npm install
-```
 
-### 3. Настройка переменных окружения
-Создайте файл `.env` на основе `.env.example`:
-```env
-PORT=3000
-GEMINI_API_KEY=your_gemini_api_key_here
-```
+# 3. Генерация всех иконок (PWA + Android mipmap)
+node scripts/generate-icons.js
 
-### 4. Запуск в режиме разработки
-```bash
+# 4. Запуск локального сервера разработки
 npm run dev
-```
-Откройте браузер по адресу: `http://localhost:3000`.
 
-### 5. Сборка продакшн веб-версии (PWA)
-```bash
+# 5. Сборка PWA для продакшна
 npm run build
 ```
-
----
-
-## 🤖 Сборка Android приложения вручную
-
-При необходимости собрать Android APK локально:
-```bash
-# 1. Собрать веб-бандл
-npm run build
-
-# 2. Скопировать веб-ресурсы в Android assets
-mkdir -p android/app/src/main/assets/public
-cp -r dist/* android/app/src/main/assets/public/
-
-# 3. Собрать APK через Gradle
-cd android
-./gradlew assembleRelease
-# или
-gradle assembleRelease
-```
-Готовый файл APK будет находиться в `android/app/build/outputs/apk/release/`.
-
----
-
-## 🔄 CI/CD & Релизы на GitHub
-
-Каждый раз, когда вы делаете push в репозиторий:
-1. Запускается GitHub Action **Android Build & Release**.
-2. Проект компилируется с версией `v1.0.${{ github.run_number }}`.
-3. В разделе [Releases](https://github.com/pippopil/MobileRemoteControlBot/releases) автоматически создается новый релиз с описанием ваших изменений и прикрепленным APK-файлом.
 
 ---
 
 ## 📄 Лицензия
 
-MIT License © 2026 Nikolay Abadeev (pippopil)
+MIT License © 2026 Nikolay Abadeev ([@pippopil](https://github.com/pippopil))
